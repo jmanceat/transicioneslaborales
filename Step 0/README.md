@@ -23,4 +23,12 @@ A partir de este punto se utiliza una estructura de iteración similar para la o
 
  ## Seccion 2 - Merge de bases especificas
 
- 
+ Esta sección del código está escrito para procesar un conjunto de datos de la GEIH con las variables organizadas. El código tiene tres bucles anidados: uno que se ejecuta para los años desde 2007 hasta 2020, otro para las áreas "Area Cabecera Resto" y otro para los meses del año.
+
+En el interior de estos bucles, se utilizan abren los conjuntos de datos que se encuentran en diferentes carpetas y subcarpetas dentro de la carpeta "rawdata". Estos conjuntos de datos se llaman "Caracteristicas generales (Personas)", "Vivienda y Hogares", "Fuerza de trabajo", "Ocupados", "Desocupados", "Inactivos", "Otros ingresos" y "Otras actividades y ayudas en la semana".
+
+Luego, se utilizan varios comandos "merge" para unir estos conjuntos de datos en un solo archivo, basándose en los identificadores de directorio, secuencia de personas, mes y orden. Estos comandos generan variables nuevas con nombres como "vivienda", "workforce", "ocupados", "desocupados", "inactivos", "otros_ingresos" y "otras_acti".
+
+Después, se utiliza un bucle "foreach" para recorrer una lista de variables denominadas "bases" y se utilizan comandos "replace" para reemplazar los valores de estas variables. Si el valor es diferente de 3, se reemplaza con 0, de lo contrario si es igual a 3, se reemplaza con 1.
+
+Finalmente, se utiliza el comando "save" para guardar el archivo procesado en una carpeta llamada "data" con un nombre que incluye el año, el mes y el área. El comando "replace" indica que el archivo se guardará sobreescribiendo el archivo existente si ya existe uno con el mismo nombre.
