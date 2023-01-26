@@ -1,6 +1,6 @@
 # Transiciones Laborales
 
-El objetivo de este repositorio es centralizar el código utilizado para organizar los datos de la Gran Encuesta Integrada de Hogares (GEIH) y el posterior análisis de las transiciones laborales en Colombia . 
+El objetivo de este repositorio es centralizar el código utilizado para organizar los datos de la Gran Encuesta Integrada de Hogares (GEIH) y el posterior análisis de las transiciones laborales en Colombia. 
 
 Los datos son suministrados por el Departamento Administrativo Nacional de Estadística (DANE) y se encuentran disponibles en el siguiente link: 
 
@@ -14,4 +14,6 @@ Este repositorio esta dividido en 6 carpetas que corresponden a cada una de las 
 
 * Código de Stata
 * README
+
+El código utilizado en este repositorio hace parte el proyecto de investigación "Metodología para la medición de flujos laborales a partir encuestas de hogares en Colombia" del departamento de Economía de la Universidad Eafit (Revisar si se tiene que incluir el grupo Rise). Por lo tanto el código no corresponde a una versión oficial del DANE o alguna entidad de la cual se utilizan datos en este proyecto. 
 
