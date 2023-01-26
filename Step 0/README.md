@@ -32,3 +32,7 @@ Luego, se utilizan varios comandos "merge" para unir estos conjuntos de datos en
 Después, se utiliza un bucle "foreach" para recorrer una lista de variables denominadas "bases" y se utilizan comandos "replace" para reemplazar los valores de estas variables. Si el valor es diferente de 3, se reemplaza con 0, de lo contrario si es igual a 3, se reemplaza con 1.
 
 Finalmente, se utiliza el comando "save" para guardar el archivo procesado en una carpeta llamada "data" con un nombre que incluye el año, el mes y el área. El comando "replace" indica que el archivo se guardará sobreescribiendo el archivo existente si ya existe uno con el mismo nombre.
+
+Este procedimiento se repite por aparte con algunos meses de 2020 debido a que el pandemia del COVID-19 dificultó la recollección de datos por parte del DANE. 
+
+Por último se crea la variable "Year" para cada base y se ajusta la variable Factor de expansión (FEX_C_2011) para los años 2011, 2016 y 2017. 
