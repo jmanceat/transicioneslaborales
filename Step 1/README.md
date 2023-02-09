@@ -2,7 +2,7 @@
 
 ## Seccion 0 - Preliminaries
 
-Este código de Stata es un script que establece las variables y las rutas necesarias para realizar un análisis de datos. El código comienza con la instrucción "clear all" que limpia todas las variables y objetos previamente cargados en el espacio de trabajo de Stata. Luego, la instrucción "set more off, perm" desactiva el paginado automático y permite guardar los cambios realizados en el espacio de trabajo.
+Esta sección del código establece las variables y las rutas necesarias para realizar un análisis de datos. El código comienza con la instrucción "clear all" que limpia todas las variables y objetos previamente cargados en el espacio de trabajo de Stata. Luego, la instrucción "set more off, perm" desactiva el paginado automático y permite guardar los cambios realizados en el espacio de trabajo.
 
 A continuación, se establecen las rutas para acceder a las bases de datos utilizadas en el análisis. Estas rutas se almacenan en variables globales, que son accesibles desde cualquier punto del script. Se establecen rutas para los datos crudos, los datos analizados, los gráficos y las tablas generadas y los archivos de registro.
 
@@ -32,11 +32,11 @@ Finalmente, ambas tasas son guardadas como variables globales para ser utilizada
 
 Este código de Stata es un bucle que se utiliza para procesar un conjunto de datos mensuales.
 
-En primer lugar, se definen dos variables locales: "years" y "tokenize". La variable "years" contiene una lista de años, desde 2012 hasta 2021, y "tokenize" contiene una lista de meses, desde enero hasta diciembre.
-
-Luego, se inicia un bucle "forval" que recorre los 12 meses del año. Dentro de este bucle, se define una variable local "prior" con el valor 2011.
+En primer lugar, se definen dos variables locales: "years" y "tokenize". La variable "years" contiene una lista de años, desde 2012 hasta 2021, y "tokenize" contiene una lista de meses, desde enero hasta diciembre. Luego, se inicia un bucle "forval" que recorre los 12 meses del año. Dentro de este bucle, se define una variable local "prior" con el valor 2011.
 
 A continuación, se inicia otro bucle "foreach" que recorre la lista de años definida anteriormente. Dentro de este bucle, se utilizan varios comandos para procesar los datos.
+
+<span style="color: red;">Nota:</span> Los bucles mencionados anteriormente cubren desde la "Sección 2 - Datos" hasta la "Sección 10 - Guardar Resultados" de este archivo. 
 
 El siguiente comando "use" es utilizado para abrir un archivo de datos específico, en este caso, se está abriendo un archivo mensual con nombre "Bases mensuales Cabecera ``mes'' `y'" del directorio "$data/GEIH/".
 
@@ -49,3 +49,14 @@ El comando "sum" se utiliza para calcular la suma de la variable "total_poblacio
 Por último, el comando "drop" se utiliza para eliminar la variable "total_poblacion" del conjunto de datos. Los datos que se cargan en este paso fuero creados en el paso "Step 0 - Creación de base anual GEIH". 
 
 ### Sección 3 - Datos de migración
+
+
+Debido a que el proposito de este proyecto de investigación es tener un panorama completo de las transiciones laborales de la población colombiana, también se incluye información del módulo de migración de la GEIH, disponible a través del Dane en el siguiente link: 
+
+- [Modulo de migración GEIH][migracion-link]
+
+[migracion-link]: https://microdatos.dane.gov.co/index.php/catalog/MERCLAB-Microdatos#_r=&collection=&country=&dtype=&from=1970&page=1&ps=&sid=&sk=&sort_by=title&sort_order=&to=2022&topic=&view=s&vk=
+
+Con estos datos, este sección del código se une la información del mercado laboral con la información de migración en donde se utiliza el comando "merge" para unir la información para cada individuo basándose en los identificadores de directorio, secuencia de personas, mes y orden. 
+
+Después de realizar el merge, se crean variables dummy que tienen como función señalar si la persona migró recientemente. 

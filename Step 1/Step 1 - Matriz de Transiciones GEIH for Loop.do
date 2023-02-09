@@ -2881,7 +2881,7 @@ drop poblacion_`y' poblacion_`prior' qpd_`y'_temp qpd_`y' total_emigracion_`y' p
 
 
 ********************************************************************************
-*                    	  Section 10 - Save Outputs    	   				       *
+*                    	  Section 10 - Guardar Resultados    	   				       *
 ********************************************************************************
 
 
