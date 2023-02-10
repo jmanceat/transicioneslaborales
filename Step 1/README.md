@@ -112,8 +112,66 @@ La última línea "```dis `prior' `y'```" imprime los años $t-1$ y $t$ en los q
 
 ## Sección 6 - Matriz para guardar resultados
 
-Este código en Stata crea una matriz llamada "mes_prior_y" con 14 filas y 13 columnas. La línea "mat list 'mes'_prior'_y'" imprime una lista de la matriz creada.
+Este código en Stata crea una matriz para cada mes con 14 filas y 13 columnas. La línea "```mat list 'mes'_prior'_y'```" imprime una lista de la matriz creada.
 
-Luego, los nombres de las columnas y las filas de la matriz se establecen con "mat colnames 'mes'prior'_y' = m i d e p of oc os on oj ot qpd emi" y "mat rownames 'mes'prior'_y' = nac m i d e p of oc os on oj ot qpd imi", respectivamente.
+Luego, los nombres de las columnas y las filas de la matriz se establecen con "```mat colnames 'mes'prior'_y' = m i d e p of oc os on oj ot qpd emi```" y "```mat rownames 'mes'prior'_y' = nac m i d e p of oc os on oj ot qpd imi```", respectivamente.
 
 Finalmente, la función "svmat2" guarda la matriz con los nombres de columna y fila especificados en los argumentos "names(col)" y "rnames(Origen_Destino)".
+
+
+## Sección 7 - Conteo de transiciones
+
+En esta sección del código se realiza un conteo para cada una de las transiciones laborales y se guardan los resultados en la matriz que se creó en la sección anterior. 
+
+
+Las líneas de código "tab var [fw=fex_entero], matcell(result)" realiza una tabulación de frecuencia para la variable "var" y almacena los resultados en una matriz llamada "result". La opción "fw=fex_entero" utiliza los factores de expansión enteros para ponderar el paso de cada unidad utilizada en el conteo.
+
+La sintaxis "replace var = result[2, 1] if Origen_Destino == value" reemplaza el valor de la variable "var" con el valor de la segunda fila y primera columna de la matriz "result" para aquellas observaciones donde "Origen_Destino" es igual al valor especificado (m, i, d, e, e0, e5, p, of, oc, os, on, oj, ot e imi).
+
+
+## Sección 8 - Ajuste de fallecidos
+
+Esta sección del código se utiliza para analizar datos de estadisticas vitales de fallecidos. El script tiene dos partes principales, ambas están bajo una estructura de control de flujo ```if``` que verifica el valor de una del loop general de años ```y```:
+
+Si ```y``` es igual a 2020, el script:
+- Carga los archivos "nofetal2018.dta" y "nofetal2019.dta" en la memoria de trabajo de Stata (en el directorio "rawdata/Vitales").
+
+- Filtra los datos por año y mes utilizando el valor de la variable "mes".
+
+- Crea una matriz llamada "fallecidos" de tamaño 1x1 y la inicializa con valores vacios.
+
+- Realiza un recuento de los datos y almacena el resultado en la matriz "fallecidos".
+
+- Ajusta el recuento de fallecidos multiplicándolo por (1 + "$tasa2020$"), en donde $tasa2020$ es el valor calculado en la Sección 1 - Datos de estadísticas vitales.
+
+- Crea tres variables nuevas: "menores", "inactivos" y "ocupados", que representan respectivamente a los menores de edad, a los estudiantes, jubilados y amas de casa, y a los ocupados activamente.
+- Crea una variable nueva llamada "totales" que almacena el valor total de la población.
+
+ - Calcula las tasas de mortalidad para cada una de las tres variables nuevas y las almacena en una matríz.
+
+
+Si y' es igual a 2021, el script:
+- Carga los archivos "nofetal2020.dta" y "nofetal2021.dta" en la memoria de trabajo de Stata (en el directorio "rawdata/Vitales").
+- Filtra los datos por año y mes utilizando el valor de la variable "mes".
+- Crea una matriz llamada "fallecidos" de tamaño 1x1 y la inicializa con valores vacios.
+- Realiza un recuento de los datos y almacena el resultado en la matriz "fallecidos".
+- Ajusta el recuento de fallecidos multiplicándolo por (1 + "$tasa2020$"), en donde $tasa2020$ es el valor calculado en la Sección 1 - Datos de estadísticas vitales.
+- Crea tres variables nuevas: "menores", "inactivos" y "ocupados", que representan respectivamente a los menores de edad, a los estudiantes, jubilados y amas de casa, y a los ocupados activamente.
+- Crea una variable nueva llamada "totales" que almacena el valor total de la población.
+ - Calcula las tasas de mortalidad para cada una de las tres variables nuevas y las almacena en una matríz.
+
+
+Por último, para cada año diferente a 2020 y 2021, el código: 
+- Carga los archivos de fallecidos correspondientes al año $t$ y al año $t-1$ en la memoria de trabajo de Stata (en el directorio "rawdata/Vitales").
+- Filtra los datos por año y mes utilizando el valor de la variable "mes".
+- Crea una matriz llamada "fallecidos" de tamaño 1x1 y la inicializa con valores vacios.
+- Realiza un recuento de los datos y almacena el resultado en la matriz "fallecidos".
+- Crea tres variables nuevas: "menores", "inactivos" y "ocupados", que representan respectivamente a los menores de edad, a los estudiantes, jubilados y amas de casa, y a los ocupados activamente.
+- Crea una variable nueva llamada "totales" que almacena el valor total de la población.
+ - Calcula las tasas de mortalidad para cada una de las tres variables nuevas y las almacena en una matríz.
+
+
+
+
+
+Este script analiza la vitalidad de la población en diferentes años y categorías. Utiliza datos de dos años consecutivos y filtra los datos por mes para realizar el análisis. Luego, se ajustan los resultados de los recuentos de fallecidos utilizando una tasa de ajuste específica para cada año. Finalmente, se crean nuevas variables y se calculan tasas de mortalidad.
