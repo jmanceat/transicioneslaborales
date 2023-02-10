@@ -35,7 +35,7 @@
 	log using "${logs}/Step 2 - Matriz de Transiciones GEIH.smcl", replace 
 	
 ********************************************************************************
-*                 Seccion 1 - Datos de estadisticas vitales Data	   		                   *
+*                 Seccion 1 - Datos de estadisticas vitales 	   		                   *
 ********************************************************************************
 
 * Nota: Data para 2020 y 2021 porque no estan disponibles estos datos en el Dane aún
@@ -187,7 +187,7 @@ mat poblacion_total = r(mean)
 drop total_poblacion
 
 ********************************************************************************
-*                       Section 3 - Migration Data    		                   *
+*                       Seccion 3 - Datos de migración    		                   *
 ********************************************************************************
 
 * Inmigration 
@@ -207,7 +207,7 @@ replace migracion=1 if migracion==3
 dis `prior' `y'
 
 ********************************************************************************
-*                          Section 4 - Variables    		                   *
+*                          Seccion 4 - Variables    		                   *
 ********************************************************************************
 
 gen fex_entero=round(FEX_C_2011)
@@ -381,7 +381,7 @@ gen r_x = (migracion==1&P753S3!=.)
 
 dis `prior' `y'
 ********************************************************************************
-*                          Section 4 - Transitions    		                   *
+*                          Section 5 - Transiciones     		               *
 ********************************************************************************
 
 
@@ -497,7 +497,7 @@ gen r_`v'=(r_x==1&`v'_y==1)
 dis `prior' `y'
 
 ********************************************************************************
-*                      Section 5 - Matrix to save outcomes                     *
+*                 Seccion 6 - Matriz para guardar resultados                   *
 ********************************************************************************
 
 
@@ -513,7 +513,7 @@ svmat2 ``mes''_`prior'_`y', names(col) rnames(Origen_Destino)
   
  
 ********************************************************************************
-*                          Section 6 - Tabulates     		                   *
+*                     Seccion 7 - Conteo de transiciones               	       *
 ********************************************************************************
 
 local var "m i d e e0 e5 p of oc os on oj ot" // o 
@@ -644,7 +644,7 @@ replace `v' = result[2, 1] if Origen_Destino == "imi"
 
 
 ********************************************************************************
-*                          Section 7 - Death Rate     		                   *
+*                       Seccion 8 - Ajuste de fallecidos                    *
 ********************************************************************************
 
 						
@@ -825,7 +825,7 @@ restore
 }
 
 ********************************************************************************
-*                         	 Section 8 - Births     		                   *
+*                         	 Section 9 - Ajuste nacimientos                   *
 ********************************************************************************
 
 preserve 
@@ -850,7 +850,7 @@ replace m = nacimientos[1, 1] if Origen_Destino == "nac"
 
 
 ********************************************************************************
-*                    Section 9 - Row and Column Totals     		               *
+*                  Section 10 - Totales de fila y de columna   	               *
 ********************************************************************************
 
 
