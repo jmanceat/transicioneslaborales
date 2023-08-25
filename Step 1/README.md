@@ -171,7 +171,12 @@ Por último, para cada año diferente a 2020 y 2021, el código:
  - Calcula las tasas de mortalidad para cada una de las tres variables nuevas y las almacena en una matríz.
 
 
-
-
-
 Este script analiza la vitalidad de la población en diferentes años y categorías. Utiliza datos de dos años consecutivos y filtra los datos por mes para realizar el análisis. Luego, se ajustan los resultados de los recuentos de fallecidos utilizando una tasa de ajuste específica para cada año. Finalmente, se crean nuevas variables y se calculan tasas de mortalidad.
+
+## Sección 9 - Ajuste de nacimientos
+
+En esta sección del código, se calcula el número de nacimientos para cada periodo de 12 meses. Para esto, se realiza el conteo de nacimientos entre el mes actual y el mismo mes del año anterior usando las bases de nacimientos estadisticas vitales.
+
+Estos datos se almacenan una matriz de dimension 1x1 para luego agregarlos a la matriz principal de transiciones. 
+
+
