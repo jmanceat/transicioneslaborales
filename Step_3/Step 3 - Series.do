@@ -12,9 +12,8 @@
 				* Modificación:  07/Jul/2021 
 */
 
-********************************************************************************
-*                          Section 0 - Preliminaries		                   *
-********************************************************************************
+
+**# Seccion 0 - Preliminaries
 
 
 	clear all
@@ -35,81 +34,8 @@
 	log using "${logs}/Step 4 - Series.smcl", replace 
 	
 
-********************************************************************************
-*							Section 1  - All plots							   *
-********************************************************************************
 
-* Fix pandemic values 
-
-clear all 
-
-local years "2008 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 2020"
-tokenize "Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre"
-
-forval mes = 1/12  {
-	
-	local prior = 2007
-	
-foreach y of local years {
-	
-
-append using "$data/temp/Transiciones/Transiciones_``mes''_`prior'_`y'.dta", force 
-
-
-local prior = `prior' + 1
-
-}
-
-}
-
-rename * *_before 
-rename (Origen_before MES_before YEAR_before) (Origen MES YEAR)
-
-tempfile temp 
-save `temp'
-
-
-clear all 
-
-local years "2008 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 2020"
-tokenize "Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre"
-
-forval mes = 1/12  {
-	
-	local prior = 2007
-	
-foreach y of local years {
-	
-
-append using "$data/Transiciones/RAS_Output/All/transition_rate_``mes''_`prior'_`y'.dta", force 
-
-local prior = `prior' + 1
-
-}
-
-}
-
-count 
-merge 1:1 Origen MES YEAR using `temp', keep(3) nogen 
-
-
-gen temp = "-"
-egen time_string = concat(YEAR temp MES)
-gen time = monthly(time_string, "YM")
-format time %tm 
-
-drop if time >= ym(2020, 3)
-
-* Average Mean 
-
-keep if Origen == "e" 
-keep e e_before
-gen diff = e_before - e 
-
-sum diff, meanonly 
-global average_diff = r(mean)
-
-dis $average_diff 
+**# Section 1 - Figuras generales 
 
 
 ********************************* Before RAS ***********************************
