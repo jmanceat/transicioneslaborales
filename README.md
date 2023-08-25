@@ -15,5 +15,5 @@ Este repositorio esta dividido en 6 carpetas que corresponden a cada una de las 
 * Código de Stata
 * README
 
-El código utilizado en este repositorio hace parte el proyecto de investigación "Metodología para la medición de flujos laborales a partir encuestas de hogares en Colombia" del departamento de Economía de la Universidad Eafit (Revisar si se tiene que incluir el grupo Rise). Por lo tanto el código no corresponde a una versión oficial del DANE o alguna entidad de la cual se utilizan datos en este proyecto. 
+El código utilizado en este repositorio hace parte el proyecto de investigación "Metodología para la medición de flujos laborales a partir encuestas de hogares en Colombia" del departamento de Economía de la Universidad Eafit. Por lo tanto el código no corresponde a una versión oficial del DANE o alguna entidad de la cual se utilizan datos en este proyecto. 
 
