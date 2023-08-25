@@ -34,3 +34,8 @@ En esta sección del código se leen las bases de las tasas de transición labor
 - Se definen momentos en los que hubo cambios en la regulación laboral colombiana que pudieron afectar las dinámicas de las transiciones laborales.
 - Se construyen los gráficos de tasas de transición para cada origen laboral.
 
+
+Nota: Las secciones 2 y 3 del código utiliza el mismo proceso pera para cada conjunto de edad y genero respectivamente. 
+
+
+
