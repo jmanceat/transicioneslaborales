@@ -1,19 +1,36 @@
-# Transiciones Laborales
+# Series 
+Este código se realiza con el objetivo de construir series de tiempo de las tasas de transición laboral antes y despues de realizar el RAS. 
 
-El objetivo de este repositorio es centralizar el código utilizado para organizar los datos de la Gran Encuesta Integrada de Hogares (GEIH) y el posterior análisis de las transiciones laborales en Colombia. 
+## Sección 0 - Preliminaries
 
-Los datos son suministrados por el Departamento Administrativo Nacional de Estadística (DANE) y se encuentran disponibles en el siguiente link: 
+Esta sección del código establece las variables y las rutas necesarias para realizar un análisis de datos. Para replicar los ejercicios de este repositorio, se debe ajustar el usuario del computador en el que se van a correr los códigos. 
 
-- [Gran Encuesta Integrada de Hogares][intra-link]
+## Sección 1 - Figuras generales
 
-[intra-link]: https://microdatos.dane.gov.co/index.php/catalog/MERCLAB-Microdatos#_r=&collection=&country=&dtype=&from=1970&page=1&ps=&sid=&sk=&sort_by=title&sort_order=&to=2022&topic=&view=s&vk=
+Esta sección se divide en tres partes: 
 
-Además, para el análisis se utilizó el sofware estadístico Stata. 
+- Calculo de diferencia entre las tasas de transición que tienen el origen en el empleo asalariado antes y después del RAS. 
+- Gráficas antes del RAS. 
+- Gráficas después del RAS.
 
-Este repositorio esta dividido en 6 carpetas que corresponden a cada una de las etapas para la construcción y análisis de las trayectorias laborales. Cada carpeta cuanta con los siguientes archivos: 
 
-* Código de Stata
-* README
+### Antes del RAS
 
-El código utilizado en este repositorio hace parte el proyecto de investigación "Metodología para la medición de flujos laborales a partir encuestas de hogares en Colombia" del departamento de Economía de la Universidad Eafit. Por lo tanto el código no corresponde a una versión oficial del DANE o alguna entidad de la cual se utilizan datos en este proyecto. 
+En esta sección del código se leen las bases de las tasas de transición laboral antes de hacer el ajuste del RAS. Para estos se siguen los siguientes pasos: 
+
+- Se leen las matrices que contienen las tasas de transición laboral de cada mes.
+- Se construye un panel de tasas de transición laboral a nivel de origen mes y año en donde cada variable representa un estado de destino laboral.
+- Se reemplazan las tasas de transición de los meses del 2020 por valores vacios debido a los errores que pudo ocasionar la pandemia del Covid-19 en cuanto a los errores de respuesta en la encuesta.
+- Se definen momentos en los que hubo cambios en la regulación laboral colombiana que pudieron afectar las dinámicas de las transiciones laborales.
+- Se construyen los gráficos de tasas de transición para cada origen laboral.  
+
+### Después del RAS
+
+En esta sección del código se leen las bases de las tasas de transición laboral antes de hacer el ajuste del RAS. Para estos se siguen los siguientes pasos: 
+
+- Se leen las matrices que contienen las tasas de transición laboral de cada mes.
+- Se construye un panel de tasas de transición laboral a nivel de origen mes y año en donde cada variable representa un estado de destino laboral.
+- Se reemplazan las tasas de transición de los meses del 2020 por valores vacios debido a los errores que pudo ocasionar la pandemia del Covid-19 en cuanto a los errores de respuesta en la encuesta.
+- Se definen momentos en los que hubo cambios en la regulación laboral colombiana que pudieron afectar las dinámicas de las transiciones laborales.
+- Se construyen los gráficos de tasas de transición para cada origen laboral.
 
