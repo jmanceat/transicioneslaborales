@@ -11,11 +11,11 @@
 				* Autor:		 Nicolas Mancera 
 				* Modificación:  24/Jun/2021
 */
-
-********************************************************************************
-*                          Section 0 - Preliminaries		                   *
 ********************************************************************************
 
+
+
+**# Seccion 0 - Preliminaries
 
 	clear all
 	set   more off
@@ -34,22 +34,17 @@
 	
 	log using "${logs}/Step 2 - Matriz de Transiciones GEIH.smcl", replace 
 	
-********************************************************************************
-*                 Seccion 1 - Datos de estadisticas vitales 	   		                   *
-********************************************************************************
+	
+	
+**# Seccion 1 - Datos de estadisticas vitales 	 
 
 * Nota: Data para 2020 y 2021 porque no estan disponibles estos datos en el Dane aún
 
-******************************** Nacimientos ***********************************
+*** Nacimientos ***
 
 * Calcular tasa de crecimiento de la poblacion 
 
 use "${rawdata}/Vitales/nac2019.dta", clear 
-
-* Generar data en formato date (Montly Data)
-
-* Nota: El numero de nacimientos preliminar en 2020 fue de 619504 y en 2019 fue de 642660
-*       lo que significa que la tasa crecimiento de los nacimientos fue de -.03603149
 
 
 *** 2020 
@@ -126,7 +121,7 @@ save "${rawdata}/Vitales/nac2021.dta", replace // Esta base es temporal mientras
 
 
 
-******************************** Fallecidos ***********************************
+*** Fallecidos ***
 
 * Nota: Numero de defunciones no fetales en el 2020: 296800
 * 		Las tasas que resultan de este proceso se incluyen luego en la construcción 
@@ -154,13 +149,12 @@ count
 local nu=r(N)
 global tasa2021=(34493 - `nu')/ `nu'
 
-********************************************************************************
-*                          Seccion 2 - Datos		   			                   *
-********************************************************************************
+
+**# Seccion 2 - Datos
+
 
 local years "2012" "2013 2014 2015 2016 2017 2018 2019 2020 2021"
 tokenize "Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre" 
-*tokenize "Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre" // Revisar porque estaba el codigo desde febrero
 
 forval mes = 1/12  {
 	
@@ -186,9 +180,10 @@ mat poblacion_total = r(mean)
 
 drop total_poblacion
 
-********************************************************************************
-*                       Seccion 3 - Datos de migración    		                   *
-********************************************************************************
+
+
+**# Seccion 3 - Datos de migración
+
 
 * Inmigration 
 
@@ -206,13 +201,14 @@ replace migracion=1 if migracion==3
 
 dis `prior' `y'
 
-********************************************************************************
-*                          Seccion 4 - Variables    		                   *
-********************************************************************************
+
+
+**# Seccion 4 - Variables
+
 
 gen fex_entero=round(FEX_C_2011)
 
-*************************** Definicion de destinos *****************************
+*** Definicion de destinos ***
 
 * Nota: la letra "y" en el nombre de las variables denota destino 
  
@@ -274,7 +270,8 @@ gen oj_y=(ocupados==1&P6430==8)
 gen ot_y=(ocupados==1&P6430==9)
 
 dis `prior' `y'
-*************************** Definicion de origenes *****************************
+
+*** Definicion de origenes ***
 
 * Nota: la letra "x" en el nombre de las variables denota origen 
 
@@ -380,9 +377,10 @@ egen i_x = rowmax(i_x_1 i_x_2 i_x_3 i_x_4 i_x_5)  			   // i_o_3
 gen r_x = (migracion==1&P753S3!=.)
 
 dis `prior' `y'
-********************************************************************************
-*                          Section 5 - Transiciones     		               *
-********************************************************************************
+
+
+
+**# Seccion 5 - Transiciones
 
 
 local var "m i d e e0 e5 p o of oc os on oj ot"
@@ -496,9 +494,8 @@ gen r_`v'=(r_x==1&`v'_y==1)
 
 dis `prior' `y'
 
-********************************************************************************
-*                 Seccion 6 - Matriz para guardar resultados                   *
-********************************************************************************
+
+**# Seccion 6 - Matriz para guardar resultados 
 
 
 mat ``mes''_`prior'_`y' = J(14, 13, .)
@@ -512,9 +509,9 @@ mat rownames ``mes''_`prior'_`y' = nac m i d e p of oc os on oj ot qpd imi
 svmat2 ``mes''_`prior'_`y', names(col) rnames(Origen_Destino)
   
  
-********************************************************************************
-*                     Seccion 7 - Conteo de transiciones               	       *
-********************************************************************************
+
+**# Seccion 7 - Conteo de transiciones
+
 
 local var "m i d e e0 e5 p of oc os on oj ot" // o 
 
@@ -643,11 +640,7 @@ replace `v' = result[2, 1] if Origen_Destino == "imi"
 
 
 
-********************************************************************************
-*                       Seccion 8 - Ajuste de fallecidos                    *
-********************************************************************************
-
-						
+**# Seccion 8 - Ajuste de fallecidos 				
 
 if `y'==2020{
 
@@ -824,9 +817,9 @@ restore
 
 }
 
-********************************************************************************
-*                         	 Section 9 - Ajuste nacimientos                   *
-********************************************************************************
+
+**# Section 9 - Ajuste nacimientos   
+
 
 preserve 
 
@@ -849,15 +842,14 @@ restore
 replace m = nacimientos[1, 1] if Origen_Destino == "nac"
 
 
-********************************************************************************
-*                  Section 10 - Totales de fila y de columna   	               *
-********************************************************************************
+
+**# Section 10 - Totales de fila y de columna
 
 
 gen Total_`y' = . 
 
 
-******************************* 2018 Totals ************************************
+*** 2018 Totales ***
 
 *** Menores de la edad de trabajar (m)
 
@@ -948,7 +940,7 @@ tempfile x
 save `x' 
 
 
-****************************** 2017 Totals *************************************
+*** 2017 Totales ***
 
 use "$data/GEIH/Bases mensuales Cabecera ``mes'' `prior'", clear 
 
@@ -1076,7 +1068,7 @@ merge 1:1 Origen_Destino using `x', keep(3) nogen
 replace Total_`prior' = m if Origen_Destino == "nac"
 
 
-*************************** Fallecidos por fila ********************************
+*** Fallecidos por fila ***
 
 
 replace qpd = tasas_qpd[1, 1]*Total_`prior' if Origen_Destino == "m"
@@ -1093,7 +1085,7 @@ replace qpd = tasas_qpd[1, 2]*Total_`prior' if Origen_Destino == "ot"
 replace qpd = tasas_qpd[1, 2]*Total_`prior' if Origen_Destino == "imi"
 
 
-************************ Correcciones individuales *****************************
+*** Correcciones individuales ***
 
 * Valores de menores de edad para trabajar 
 
@@ -1131,9 +1123,9 @@ replace emi = . if Origen_Destino == "imi"
 drop poblacion_`y' poblacion_`prior' qpd_`y'_temp qpd_`y' total_emigracion_`y' poblacion_`prior'_temp poblacion_`prior'_temp2
 
 
-********************************************************************************
-*                    	  Section 10 - Save Outputs    	   				       *
-********************************************************************************
+
+**# Seccion 11 - Guardar los resultados
+
 
 
 * Archivo de Stata
@@ -1153,18 +1145,10 @@ local prior = `prior' + 1
 
 
 
+**# Seccion 12 - Ajustes adicionales para años individuales
 
 
-******************************************************************************** 
-*																			   *
-*								Data  2012                               *      
-*																			   *
-********************************************************************************
-	
-
-
-
-
+*** Data  2012 *** 
 
 
 local years "2012"
@@ -1196,9 +1180,9 @@ mat poblacion_total = r(mean)
 drop total_poblacion
 
 
-********************************************************************************
-*                       Section 2 - Migration Data    		                   *
-********************************************************************************
+
+* Section 2 - Migration Data
+
 
 * Inmigration 
 
@@ -1216,13 +1200,13 @@ replace migracion=1 if migracion==3
 
 dis `prior' `y'
 
-********************************************************************************
-*                          Section 3 - Variables    		                   *
-********************************************************************************
+
+* Section 3 - Variables
+
 
 gen fex_entero=round(FEX_C_2011)
 
-*************************** Definicion de destinos *****************************
+*** Definicion de destinos ***
 
 * Nota: la letra "y" en el nombre de las variables denota destino 
  
@@ -1284,7 +1268,8 @@ gen oj_y=(ocupados==1&P6430==8)
 gen ot_y=(ocupados==1&P6430==9)
 
 dis `prior' `y'
-*************************** Definicion de origenes *****************************
+
+*** Definicion de origenes ***
 
 * Nota: la letra "x" en el nombre de las variables denota origen 
 
@@ -1390,9 +1375,8 @@ egen i_x = rowmax(i_x_1 i_x_2 i_x_3 i_x_4 i_x_5)  			   // i_o_3
 gen r_x = (migracion==1&P753S3!=.)
 
 dis `prior' `y'
-********************************************************************************
-*                          Section 4 - Transitions    		                   *
-********************************************************************************
+
+* Section 4 - Transitions
 
 
 local var "m i d e e0 e5 p o of oc os on oj ot"
@@ -1506,9 +1490,9 @@ gen r_`v'=(r_x==1&`v'_y==1)
 
 dis `prior' `y'
 
-********************************************************************************
-*                      Section 5 - Matrix to save outcomes                     *
-********************************************************************************
+
+* Section 5 - Matrix to save outcomes
+
 
 
 mat ``mes''_`prior'_`y' = J(14, 13, .)
@@ -1522,9 +1506,9 @@ mat rownames ``mes''_`prior'_`y' = nac m i d e p of oc os on oj ot qpd imi
 svmat2 ``mes''_`prior'_`y', names(col) rnames(Origen_Destino)
   
  
-********************************************************************************
-*                          Section 6 - Tabulates     		                   *
-********************************************************************************
+
+* Section 6 - Tabulates
+
 
 local var "m i d e e0 e5 p of oc os on oj ot" // o 
 
@@ -1653,9 +1637,9 @@ replace `v' = result[2, 1] if Origen_Destino == "imi"
 
 
 
-********************************************************************************
-*                          Section 7 - Death Rate     		                   *
-********************************************************************************
+
+* Section 7 - Death Rate
+
 
 
 preserve 
@@ -1709,9 +1693,8 @@ drop T_menores T_inactivos T_ocupados
 restore 
 
 
-********************************************************************************
-*                         	 Section 8 - Births     		                   *
-********************************************************************************
+
+* Section 8 - Births
 
 preserve 
 
@@ -1733,15 +1716,15 @@ restore
 replace m = nacimientos[1, 1] if Origen_Destino == "nac"
 
 
-********************************************************************************
-*                    Section 9 - Row and Column Totals     		               *
-********************************************************************************
+
+* Section 9 - Totales de fila y columna 
+
 
 
 gen Total_`y' = . 
 
 
-******************************* 2018 Totals ************************************
+*** 2018 Totals ***
 
 *** Menores de la edad de trabajar (m)
 
@@ -1832,7 +1815,7 @@ tempfile x
 save `x' 
 
 
-****************************** 2017 Totals *************************************
+*** 2017 Totals ***
 
 use "$data/GEIH/Bases mensuales Cabecera ``mes'' `prior'", clear 
 
@@ -1960,7 +1943,7 @@ merge 1:1 Origen_Destino using `x', keep(3) nogen
 replace Total_`prior' = m if Origen_Destino == "nac"
 
 
-*************************** Fallecidos por fila ********************************
+*** Fallecidos por fila ***
 
 
 replace qpd = tasas_qpd[1, 1]*Total_`prior' if Origen_Destino == "m"
@@ -1977,7 +1960,7 @@ replace qpd = tasas_qpd[1, 2]*Total_`prior' if Origen_Destino == "ot"
 replace qpd = tasas_qpd[1, 2]*Total_`prior' if Origen_Destino == "imi"
 
 
-************************ Correcciones individuales *****************************
+*** Correcciones individuales ***
 
 * Valores de menores de edad para trabajar 
 
@@ -2015,9 +1998,8 @@ replace emi = . if Origen_Destino == "imi"
 drop poblacion_`y' poblacion_`prior' qpd_`y'_temp qpd_`y' total_emigracion_`y' poblacion_`prior'_temp poblacion_`prior'_temp2
 
 
-********************************************************************************
-*                    	  Section 10 - Save Outputs    	   				       *
-********************************************************************************
+
+* Seccion 10 -  Guardar los resultados
 
 
 * Archivo de Stata
@@ -2033,17 +2015,7 @@ local prior = `prior' + 1
 
 
 
-
-
-******************************************************************************** 
-*																			   *
-*								Data before 2012                               *      
-*																			   *
-********************************************************************************
-	
-	
-
-
+*** Datos antes de 2012 ***
 
 
 local years   "2008 2009 2010 2011"  // "2012" 
@@ -2072,22 +2044,21 @@ mat poblacion_total = r(mean)
 
 drop total_poblacion
 
-********************************************************************************
-*                       Section 2 - Migration Data    		                   *
-********************************************************************************
+
+* Seccion 2 - Datos de migracion
 
 * Inmigration 
 
 
 dis `prior' `y'
 
-********************************************************************************
-*                          Section 3 - Variables    		                   *
-********************************************************************************
+
+* Seccion 3 - Variables 
+
 
 gen fex_entero=round(FEX_C_2011)
 
-*************************** Definicion de destinos *****************************
+*** Definicion de destinos ***
 
 * Nota: la letra "y" en el nombre de las variables denota destino 
  
@@ -2149,7 +2120,7 @@ gen oj_y=(ocupados==1&P6430==8)
 gen ot_y=(ocupados==1&P6430==9)
 
 dis `prior' `y'
-*************************** Definicion de origenes *****************************
+*** Definicion de origenes ***
 
 * Nota: la letra "x" en el nombre de las variables denota origen 
 
@@ -2255,9 +2226,10 @@ egen i_x = rowmax(i_x_1 i_x_2 i_x_3 i_x_4 i_x_5)  			   // i_o_3
 gen r_x = 0
 
 dis `prior' `y'
-********************************************************************************
-*                          Section 4 - Transitions    		                   *
-********************************************************************************
+
+
+* Seccion 4 - Transiciones
+
 
 
 local var "m i d e e0 e5 p o of oc os on oj ot"
@@ -2371,9 +2343,8 @@ gen r_`v'=(r_x==1&`v'_y==1)
 
 dis `prior' `y'
 
-********************************************************************************
-*                      Section 5 - Matrix to save outcomes                     *
-********************************************************************************
+
+* Seccion 5 - Matriz para guardar resultados 
 
 
 mat ``mes''_`prior'_`y' = J(14, 13, .)
@@ -2387,9 +2358,9 @@ mat rownames ``mes''_`prior'_`y' = nac m i d e p of oc os on oj ot qpd imi
 svmat2 ``mes''_`prior'_`y', names(col) rnames(Origen_Destino)
   
  
-********************************************************************************
-*                          Section 6 - Tabulates     		                   *
-********************************************************************************
+
+* Section 6 - Tabulates
+
 
 local var "m i d e e0 e5 p of oc os on oj ot" // o 
 
@@ -2518,9 +2489,9 @@ replace `v' = result[2, 1] if Origen_Destino == "imi"
 
 
 
-********************************************************************************
-*                          Section 7 - Death Rate     		                   *
-********************************************************************************
+
+* Section 7 - Death Rate 
+
 
 
 preserve 
@@ -2574,9 +2545,9 @@ drop T_menores T_inactivos T_ocupados
 restore 
 
 
-********************************************************************************
-*                         	 Section 8 - Births     		                   *
-********************************************************************************
+
+* Section 8 - Births 
+
 
 preserve 
 
@@ -2598,15 +2569,14 @@ restore
 replace m = nacimientos[1, 1] if Origen_Destino == "nac"
 
 
-********************************************************************************
-*                    Section 9 - Row and Column Totals     		               *
-********************************************************************************
+
+* Seccion 9 - Totales de fila y columna 
 
 
 gen Total_`y' = . 
 
 
-******************************* 2018 Totals ************************************
+*** 2018 Totals ***
 
 *** Menores de la edad de trabajar (m)
 
@@ -2697,7 +2667,7 @@ tempfile x
 save `x' 
 
 
-****************************** 2017 Totals *************************************
+*** 2017 Totals ***
 
 use "$data/GEIH/Bases mensuales Cabecera ``mes'' `prior'", clear 
 
@@ -2825,7 +2795,7 @@ merge 1:1 Origen_Destino using `x', keep(3) nogen
 replace Total_`prior' = m if Origen_Destino == "nac"
 
 
-*************************** Fallecidos por fila ********************************
+*** Fallecidos por fila ***
 
 
 replace qpd = tasas_qpd[1, 1]*Total_`prior' if Origen_Destino == "m"
@@ -2842,7 +2812,7 @@ replace qpd = tasas_qpd[1, 2]*Total_`prior' if Origen_Destino == "ot"
 replace qpd = tasas_qpd[1, 2]*Total_`prior' if Origen_Destino == "imi"
 
 
-************************ Correcciones individuales *****************************
+*** Correcciones individuales ***
 
 * Valores de menores de edad para trabajar 
 
@@ -2880,9 +2850,8 @@ replace emi = . if Origen_Destino == "imi"
 drop poblacion_`y' poblacion_`prior' qpd_`y'_temp qpd_`y' total_emigracion_`y' poblacion_`prior'_temp poblacion_`prior'_temp2
 
 
-********************************************************************************
-*                    	  Section 10 - Guardar Resultados    	   				       *
-********************************************************************************
+
+* Seccion 10 - Guardar Resultados
 
 
 * Archivo de Stata

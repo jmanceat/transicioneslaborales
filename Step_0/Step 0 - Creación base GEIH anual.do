@@ -1,7 +1,7 @@
 ********************************************************************************
 ********************************************************************************
 
-*                        Creacion base GEIH                                    *
+*                        	 Creacion base GEIH                                *
 
 ********************************************************************************
 ********************************************************************************
@@ -11,30 +11,37 @@
 				* Autor:		Nicolas Mancera 
 */
 
-********************************************************************************
-*                          Seccion 0 - Preliminaries		                   *
-********************************************************************************
+
+**#  Seccion 0 - Preliminaries
+                         		                  
 	clear all
 	set   more off, perm 
 	
 * Rutas de las bases 
 
-	global rawdata  "/Users/nicolasmancera/Dropbox/Trayectorias_Laborales_Colombia/Data"
-	global data 	"/Users/nicolasmancera/Dropbox/Trayectorias_Laborales_Colombia/Data_analysis/Data"
-	global graphs 	"/Users/nicolasmancera/Dropbox/Trayectorias_Laborales_Colombia/Output/Graphs/Ejercicios GEIH"
-	global tables 	"/Users/nicolasmancera/Dropbox/Trayectorias_Laborales_Colombia/Output/Tables/Ejercicios GEIH"
-	global logs     "/Users/nicolasmancera/Dropbox/Trayectorias_Laborales_Colombia/Data_analysis/Log_files/Ejercicios GEIH"
+	if "`c(username)'" == "nicolasmancera"{
+		global cdrepo "/Users/nicolasmancera/Dropbox/Trayectorias_Laborales_Colombia"
+	}
+	else{
+		global cdrepo "/Users/nicolasmancera/Dropbox/Trayectorias_Laborales_Colombia"
+	}
+		
+	global rawdata  "${cdrepo}/Data"
+	global data 	"${cdrepo}/Data_analysis/Data"
+	global graphs 	"${cdrepo}/Output/Graphs/Ejercicios GEIH"
+	global tables 	"${cdrepo}/Output/Tables/Ejercicios GEIH"
+	global logs     "${cdrepo}/Data_analysis/Log_files/Ejercicios GEIH"
 	
 	cd "${rawdata}"
 
 	cap log close 
 	log using "${logs}/Step 0 - Creacion base GEIH.smcl", replace
 
-********************************************************************************
-* 	               Seccion 1 - Organizacion de variables 		              *
-********************************************************************************
-	
-* Guardar todas las bases con la variables en mayuscula 
+
+**# Seccion 1 - Organizacion de variables
+
+* 1. Todas las bases con variables en mayuscula	
+
 
 local areas "Area Cabecera Resto"
 local bases `" "Caracteristicas generales (Personas)" "Fuerza de trabajo" "Ocupados" "Desocupados" "Inactivos" "Vivienda y Hogares" "Otros ingresos" "Otras actividades y ayudas en la semana" "'
@@ -60,8 +67,7 @@ noisily save "$rawdata/GEIH/`i'/`m'/`a' - `b'.dta", replace
 }
 }
 	
-* Arreglar la variable MES para todas las bases (Esta matriz muestra como esta compuesta la variable mes de todos los años y además muestra en que años no esta la variable )
-
+* 2. Arreglar la variable MES para todas las bases
 
 local areas "Area Cabecera Resto"
 local bases "Caracteristicas generales (Personas)" "Fuerza de trabajo"  "Ocupados" "Desocupados" "Inactivos" "Vivienda y Hogares" "Otros ingresos" "Otras actividades y ayudas en la semana" 
@@ -98,7 +104,7 @@ mat list mes_Area
 mat list mes_Cabecera
 mat list mes_Resto 
 
-* Arreglar la variable REGIS y CLASE que esta en string en los años 2018 2019
+* 3. Arreglar la variable REGIS y CLASE que esta en string en los años 2018 2019
 
 local areas "Area Cabecera Resto"
 local meses "Enero FebreroMarzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre"
@@ -123,9 +129,8 @@ save "$rawdata/GEIH/`i'/`m'/`a' - `b'.dta", replace
 }
 
 
-****************************** Variable DPTO ***********************************
+* 4. Organización de variable DPTO
 
-* Departamentos que aparecen de 2008 a 2016 
 
 local areas "Area Cabecera Resto"
 local bases `" "Caracteristicas generales (Personas)" "Fuerza de trabajo" "Ocupados" "Desocupados" "Inactivos" "Vivienda y Hogares" "Otros ingresos" "Otras actividades y ayudas en la semana" "'
@@ -263,11 +268,8 @@ save "$data/Listado_Departamentos_GEIH.dta", replace  // Esta base contiene la l
 clear all 
 
 
-****************************** Variable AREA ***********************************
+* 5. Organización de variable AREA
 
-* Nota: La variable AREA solo aparece en las bases de Area y Cabecera
-
-* Areas que aparecen de 2008 a 2016 
 
 local areas "Area Cabecera"
 local bases `" "Caracteristicas generales (Personas)" "Fuerza de trabajo" "Ocupados" "Desocupados" "Inactivos" "Vivienda y Hogares" "Otros ingresos" "Otras actividades y ayudas en la semana" "'
