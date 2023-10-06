@@ -7,17 +7,12 @@ El objetivo de los códigos es generar las matrices de transición entre estados
 
 Esta sección del código establece las variables y las rutas necesarias para realizar un análisis de datos. Para replicar los ejercicios de este repositorio, se debe ajustar el usuario del computador en el que se van a correr los códigos. 
 
-## Sección 1 - Datos de estadísticas vitales 
+## Sección 1 - Datos 
 
-### Nacimientos
+En esta sección se leen las bases de datos que contienen las matrices de transición calculadas en el Step 1. En este proceso se calculan los totales de fila y de columna de cada una de las matrices de transición y se cálcula la diferencia entre estos dos totales. 
 
-En esta sección del código se utilizan las bases de estadisticas vitales de nacimientos del año 2019 para hacer una proyección del numero de nacimientos mensual para los meses de 2020 y 2021. Este proceso se realiza de esta manera debido a que las bases de estadisticas vitales solo están disponibles hasta el año 2019. En particular, se toma la tasa de crecimiento de la población de 2020 (o 2021) y se proyecta el numero de nacimientos para cada mes de acuerdo con esta tasa.  
+Por último, con estos totales se consiguen los valores de la emigración y la inmigración que sirven para compesar los valores faltantes de estos dos estados. 
 
-### Fallecidos 
-
-En esta sección del código se realiza un proceso similar al que se utiliza en las estadísticas de nacimientos. Es decir se calcula la tasa de defunciones para los años 2020 y 2021. 
-
-Sin embargo, se debe considerar que para realizar la proyección de fallecidos, se debe tener en cuenta que las tasas de defunciones varían de acuerdo a los grupos de edades. Esta consideración se tiene en cuenta en una sección posterior del código. 
 
 
 ## Sección 2 -  Datos
